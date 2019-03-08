@@ -1,12 +1,20 @@
 class Question {
-    constructor(question, answers, correctAnswer) {
+    constructor(question, answerArray, correctAnswer) {
+        this.answers = answerArray
+        this.shuffleArray(this.answers)
         this.timer = 30;
         this.question = question;
-        this.choiceOne = answers[0];
-        this.choiceTwo = answers[1];
-        this.choiceThree = answers[2];
-        this.choiceFour = answers[3];
+        this.choiceOne = this.answers[0];
+        this.choiceTwo = this.answers[1];
+        this.choiceThree = this.answers[2];
+        this.choiceFour = this.answers[3];
         this.answer = correctAnswer;
+    }
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
     renderQuestion = function (parentDiv) {
         // Builds the current question in the div given
@@ -56,6 +64,7 @@ class TriviaGame {
         this.questions = builtQuestions
         console.log(this.questions)
     }
+
     newGame = () => {
         // Starts a new game state. Questions need to be initialized here
         this.buildQuestions(); // All of the questions need to be initialized here
@@ -84,10 +93,13 @@ class TriviaGame {
         $("#main-row").empty()
         if (choice === this.currentQuestion.answer) {
             this.correctAnswers++;
+            console.log("correct")
         } else if (choice === "timeout") {
             this.unanswered++;
+            console.log("out of time")
         } else {
             this.incorrectAnswers++;
+            console.log("wrong")
         }
 
         this.countdown = setTimeout(() => {
@@ -108,25 +120,3 @@ function start() {
         }
     })
 }
-
-// User goes to the website. They see an entrance screen with a push button to start
-
-// They see a question pop up and the timer begins counting down
-
-// They choose an answer that is correct. 
-
-// A screen pops up congratulating them.
-
-// After five seconds, the screen is replaced with a new question
-
-// They choose an answer that is incorrect.
-
-// A screen pops up saying what the correct answer was
-
-// After five seconds, the screen is replaced with a new question
-
-// They don't provide a response. 
-
-// After thirty seconds, a screen pops up saying they ran out of time displaying the correct answer
-
-// After five seconds, the game ends and a screen displays showing the number of correct answers, incorrect answers, and a newgame screen.
