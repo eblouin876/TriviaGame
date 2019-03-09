@@ -20,6 +20,11 @@ body {
     margin: .5rem .5rem;
 }
 
+.start-button:hover {
+    background-color: rgba(88, 255, 138, 0.4);
+
+}
+
 @media screen and (max-width: 992px) {
     h1 {
         font-size: 1.5rem
