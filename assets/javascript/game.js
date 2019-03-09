@@ -2,7 +2,7 @@ class Question {
     constructor(question, answerArray, correctAnswer) {
         this.answers = answerArray
         this.shuffleArray(this.answers)
-        this.timer = 30;
+        this.timer = 10;
         this.question = question;
         this.choiceOne = this.answers[0];
         this.choiceTwo = this.answers[1];
@@ -48,9 +48,9 @@ class TriviaGame {
         this.rawQuestions = raw;
         this.questions;
         this.currentQuestion;
-        this.correctAnswers;
-        this.incorrectAnswers;
-        this.unanswered;
+        this.correctAnswers = 0;
+        this.incorrectAnswers = 0;
+        this.unanswered = 0;
         this.newGame();
         this.countdown;
     }
@@ -62,12 +62,12 @@ class TriviaGame {
             builtQuestions.push(newQu)
         });
         this.questions = builtQuestions
-        console.log(this.questions)
     }
 
     newGame = () => {
         // Starts a new game state. Questions need to be initialized here
         this.buildQuestions(); // All of the questions need to be initialized here
+        $("#main-row").empty()
         this.pickQuestion()
     }
 
@@ -84,7 +84,16 @@ class TriviaGame {
                 }
             }, 1000)
         } else {
-            alert("ask new game")
+            let col = $("<div class='col-12'>")
+            let jumbo = $("<div class='jumbotron'>")
+            let corr = $(`<p>`).text("Correct: " + this.correctAnswers)
+            let incorr = $(`<p>`).text("Incorrect: " + this.incorrectAnswers)
+            let passed = $(`<p>`).text("Ran out of Time: " + this.unanswered)
+            $("#main-row").empty()
+            $("#main-row").append(col.append(jumbo.append(corr, incorr, passed)))
+            $("#title").text("Select a category for a new game.")
+            $('.start-button').removeClass('d-none')
+
         }
     }
 
@@ -93,30 +102,52 @@ class TriviaGame {
         $("#main-row").empty()
         if (choice === this.currentQuestion.answer) {
             this.correctAnswers++;
-            console.log("correct")
+            this.showResponse("correct")
         } else if (choice === "timeout") {
             this.unanswered++;
-            console.log("out of time")
+            this.showResponse("timeout")
         } else {
             this.incorrectAnswers++;
-            console.log("wrong")
+            this.showResponse("wrong")
         }
 
         this.countdown = setTimeout(() => {
             $("#main-row").empty()
             this.pickQuestion()
-        }, 5000)
+        }, 3000)
     }
 
+    showResponse = (condition) => {
+        let col = $("<div class='col-12'>")
+        let jumbo = $("<div class='jumbotron'>")
+        let correct = $("<h1>").text("Congratulations! You got the question right!")
+        let wrong = $("<h1>").text(`Sorry, you picked the wrong answer. The correct answer is: `).append(`<p>${this.currentQuestion.answer}</p>`)
+        let timeout = $("<h1>").text(`Whoops! You ran out of time! The correct answer is: `).append(`<p>${this.currentQuestion.answer}</p>`)
+        if (condition === "wrong") {
+            $("#main-row").append(col, jumbo.append(wrong))
+        }
+        if (condition === "correct") {
+            $("#main-row").append(col, jumbo.append(correct))
+        }
+        if (condition === "timeout") {
+            $("#main-row").append(col, jumbo.append(timeout))
+        }
+    }
 
 }
 let game;
 
-function start() {
+function start(category) {
     $.ajax({
-        url: "https://opentdb.com/api.php?amount=20&category=20&type=multiple",
+        url: `https://opentdb.com/api.php?amount=20&category=${category}&type=multiple`,
         complete: (result) => {
             game = new TriviaGame(result.responseJSON.results)
         }
     })
 }
+
+// Mythology:20
+// Books:10
+// Sports: 21
+// Film: 11
+// History: 23
