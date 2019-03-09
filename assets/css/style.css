@@ -2,3 +2,26 @@
     width: 75%;
     margin: .5rem;
 }
+
+:root,
+body {
+    background-image: url("../images/background.png");
+}
+
+.jumbotron {
+    background: none;
+}
+
+.response:hover {
+    background-color: rgba(124, 101, 240, 0.40);
+}
+
+.start-button {
+    margin: .5rem .5rem;
+}
+
+@media screen and (max-width: 992px) {
+    h1 {
+        font-size: 1.5rem
+    }
+}

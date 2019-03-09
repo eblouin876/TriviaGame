@@ -29,10 +29,10 @@ class Question {
         </div>
         <div class="row">
         <div class="col-12">
-        <button class="btn btn-primary response" onclick='game.checkAnswer("${this.choiceOne}")'>${this.choiceOne}</button>
-        <button class="btn btn-primary response" onclick='game.checkAnswer("${this.choiceTwo}")'>${this.choiceTwo}</button>
-        <button class="btn btn-primary response" onclick='game.checkAnswer("${this.choiceThree}")'>${this.choiceThree}</button>
-        <button class="btn btn-primary response" onclick='game.checkAnswer("${this.choiceFour}")'>${this.choiceFour}</button>
+        <button class="btn response" onclick='game.checkAnswer("${this.choiceOne}")'>${this.choiceOne}</button>
+        <button class="btn response" onclick='game.checkAnswer("${this.choiceTwo}")'>${this.choiceTwo}</button>
+        <button class="btn response" onclick='game.checkAnswer("${this.choiceThree}")'>${this.choiceThree}</button>
+        <button class="btn response" onclick='game.checkAnswer("${this.choiceFour}")'>${this.choiceFour}</button>
         </div>
         </div>
         </div>
@@ -86,9 +86,9 @@ class TriviaGame {
         } else {
             let col = $("<div class='col-12'>")
             let jumbo = $("<div class='jumbotron'>")
-            let corr = $(`<p>`).text("Correct: " + this.correctAnswers)
-            let incorr = $(`<p>`).text("Incorrect: " + this.incorrectAnswers)
-            let passed = $(`<p>`).text("Ran out of Time: " + this.unanswered)
+            let corr = $(`<h1>`).text("Correct: " + this.correctAnswers)
+            let incorr = $(`<h1>`).text("Incorrect: " + this.incorrectAnswers)
+            let passed = $(`<h1>`).text("Ran out of Time: " + this.unanswered)
             $("#main-row").empty()
             $("#main-row").append(col.append(jumbo.append(corr, incorr, passed)))
             $("#title").text("Select a category for a new game.")
@@ -124,13 +124,13 @@ class TriviaGame {
         let wrong = $("<h1>").text(`Sorry, you picked the wrong answer. The correct answer is: `).append(`<p>${this.currentQuestion.answer}</p>`)
         let timeout = $("<h1>").text(`Whoops! You ran out of time! The correct answer is: `).append(`<p>${this.currentQuestion.answer}</p>`)
         if (condition === "wrong") {
-            $("#main-row").append(col, jumbo.append(wrong))
+            $("#main-row").append(col.append(jumbo.append(wrong)))
         }
         if (condition === "correct") {
-            $("#main-row").append(col, jumbo.append(correct))
+            $("#main-row").append(col.append(jumbo.append(correct)))
         }
         if (condition === "timeout") {
-            $("#main-row").append(col, jumbo.append(timeout))
+            $("#main-row").append(col.append(jumbo.append(timeout)))
         }
     }
 
